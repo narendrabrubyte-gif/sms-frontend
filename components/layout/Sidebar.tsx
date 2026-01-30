@@ -2,15 +2,25 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, BookOpen, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  BookOpen,
+  LogOut,
+  UserPlus,
+  CalendarCheck,
+  GraduationCap,
+} from "lucide-react";
 import Cookies from "js-cookie";
 
 const menuItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Enrollment", href: "/enrollments", icon: UserPlus },
+  { name: "Attendance", href: "/attendance", icon: CalendarCheck },
+  { name: "Marks", href: "/marks", icon: GraduationCap },
   { name: "Students", href: "/students", icon: Users },
   { name: "Courses", href: "/courses", icon: BookOpen },
 ];
-
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
