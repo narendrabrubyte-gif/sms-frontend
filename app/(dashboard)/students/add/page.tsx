@@ -79,7 +79,7 @@ export default function AddStudentPage() {
                   required: "First Name is required",
                 })}
                 className="w-full p-2 border rounded"
-                placeholder="Rahul"
+                placeholder="Narendre"
               />
               {errors.first_name && (
                 <p className="text-red-500 text-xs mt-1">
@@ -98,7 +98,7 @@ export default function AddStudentPage() {
                   required: "Last Name is required",
                 })}
                 className="w-full p-2 border rounded"
-                placeholder="Sharma"
+                placeholder="Kumar"
               />
               {errors.last_name && (
                 <p className="text-red-500 text-xs mt-1">
@@ -116,7 +116,7 @@ export default function AddStudentPage() {
                 type="email"
                 {...register("email", { required: "Email is required" })}
                 className="w-full p-2 border rounded"
-                placeholder="rahul@example.com"
+                placeholder="Nk321@gmail.com"
               />
             </div>
 
@@ -126,7 +126,7 @@ export default function AddStudentPage() {
               <input
                 {...register("phone", { required: "Phone is required" })}
                 className="w-full p-2 border rounded"
-                placeholder="9876543210"
+                placeholder="9602826416"
               />
             </div>
           </div>

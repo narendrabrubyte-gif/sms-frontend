@@ -50,8 +50,8 @@ export default function CoursesPage() {
     <div>
       <Toaster />
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <BookOpen className="text-blue-600" /> Courses Management
+        <h1 className="text-2xl font-bold flex items-center gap-2 text-black">
+          <BookOpen className="text-blue-600 " /> Courses Management
         </h1>
         <Link 
           href="/courses/add" 
@@ -62,7 +62,7 @@ export default function CoursesPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-white p-4 rounded shadow mb-4 flex gap-2 items-center">
+      <div className="bg-white p-4 rounded shadow mb-4 flex gap-2 items-center text-black">
         <Search className="text-gray-400" />
         <input 
           type="text"
