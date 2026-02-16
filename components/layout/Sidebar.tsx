@@ -20,6 +20,7 @@ const menuItems = [
   { name: "Marks", href: "/marks", icon: GraduationCap },
   { name: "Students", href: "/students", icon: Users },
   { name: "Courses", href: "/courses", icon: BookOpen },
+  { name: "Library", href: "/library", icon: BookOpen },
 ];
 export default function Sidebar() {
   const pathname = usePathname();
