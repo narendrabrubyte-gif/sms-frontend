@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,8 +10,8 @@ import LibrarySidebar from "./components/LibrarySidebar";
 
 interface RecordType {
   id: string;
- issuedAt: string;
-  return_date?: string;
+  issuedAt: string;
+  returnedAt?: string;
 
   student: {
     student_id: string;
@@ -26,6 +28,7 @@ interface RecordType {
 export default function LibraryRecordsPage() {
   const [records, setRecords] = useState<RecordType[]>([]);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState(""); // ✅ SEARCH STATE
   const router = useRouter();
 
   const limit = 10;
@@ -33,14 +36,21 @@ export default function LibraryRecordsPage() {
   const fetchRecords = async () => {
     try {
       const res = await api.get("/library/records");
-      setRecords(Array.isArray(res.data) ? res.data : []);
+
+      const data = Array.isArray(res.data) ? res.data : [];
+
+      const formatted = data.map((r: any) => ({
+        ...r,
+        returnedAt: r.returnedAt || r.returned_at || null
+      }));
+
+      setRecords(formatted);
     } catch {
       toast.error("Failed to load records");
     }
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRecords();
   }, []);
 
@@ -58,10 +68,18 @@ export default function LibraryRecordsPage() {
     }
   };
 
+  // ✅ SEARCH FILTER LOGIC
+  const filteredRecords = records.filter(r =>
+    `${r.student?.first_name} ${r.student?.last_name}`
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    r.book?.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   // PAGINATION
-  const totalPages = Math.ceil(records.length / limit);
+  const totalPages = Math.ceil(filteredRecords.length / limit);
   const start = (page - 1) * limit;
-  const paginated = records.slice(start, start + limit);
+  const paginated = filteredRecords.slice(start, start + limit);
 
   return (
     <div className="flex">
@@ -79,6 +97,20 @@ export default function LibraryRecordsPage() {
           >
             + Add Record
           </button>
+        </div>
+
+        {/* ✅ SEARCH INPUT */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search by student or book..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+            className="border px-3 py-2 rounded w-full max-w-md"
+          />
         </div>
 
         {/* TABLE */}
@@ -116,21 +148,20 @@ export default function LibraryRecordsPage() {
                   </td>
 
                   <td className="border p-2">
-                    {r.return_date
-                      ? new Date(r.return_date).toLocaleDateString()
+                    {r.returnedAt
+                      ? new Date(r.returnedAt).toLocaleDateString()
                       : "Not Returned"}
                   </td>
 
                   {/* ACTION BUTTONS */}
                   <td className="border p-2 space-x-2">
 
-<button
-  onClick={() => router.push(`/library/view/${r.id}`)}
-  className="bg-green-600 text-white px-3 py-1 rounded"
->
-  View
-</button>
-
+                    <button
+                      onClick={() => router.push(`/library/view/${r.id}`)}
+                      className="bg-green-600 text-white px-3 py-1 rounded"
+                    >
+                      View
+                    </button>
 
                     <button
                       onClick={() => router.push(`/library/edit/${r.id}`)}

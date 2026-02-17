@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -51,10 +53,23 @@ export default function BooksPage() {
 
   return (
     <div className="p-6 text-black">
+
       {/* HEADER */}
       <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Books</h1>
 
+        {/* LEFT SIDE (Back + Title) */}
+        <div className="flex items-center gap-5 bg-blue-600 p-2 rounded">
+          <button
+            onClick={() => router.back()}
+            className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+          >
+            ← Back
+          </button>
+
+          <h1 className="text-2xl font-bold">Books</h1>
+        </div>
+
+        {/* RIGHT SIDE */}
         <button
           onClick={() => router.push("/library/books/add")}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg"

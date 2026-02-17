@@ -47,7 +47,7 @@ export default function EditRecordPage() {
     const load = async () => {
       try {
         const [recordRes, studentRes, bookRes] = await Promise.all([
-          api.get(`/library/records/${id}`), // single record
+          api.get(`/library/records/${id}`),
           api.get(`/students`),
           api.get(`/library/books`)
         ]);
@@ -86,10 +86,10 @@ export default function EditRecordPage() {
 
     try {
       await api.patch(`/library/records/${id}`, {
-        student_id: form.studentId,
-        book_id: form.bookId,
-        status: form.status
-      });
+  studentId: form.studentId,
+  bookId: form.bookId,
+  status: form.status
+});
 
       toast.success("Record Updated Successfully");
       router.push("/library");
