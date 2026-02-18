@@ -81,12 +81,12 @@ export default function BooksPage() {
       {/* TABLE */}
       <div className="overflow-auto border rounded-lg">
         <table className="w-full text-sm">
-          <thead className="bg-gray-100 text-black">
+          <thead className="bg-gray-100">
             <tr>
-              <th className="p-3 border">Title</th>
-              <th className="p-3 border">Class</th>
-              <th className="p-3 border">Total</th>
-              <th className="p-3 border">Status</th>
+              <th className="p-2 border text-lg">Title</th>
+              <th className="p-2 border text-lg">Class</th>
+              <th className="p-2 border text-lg">Total</th>
+              <th className="p-2 border text-lg">Status</th>
             </tr>
           </thead>
 

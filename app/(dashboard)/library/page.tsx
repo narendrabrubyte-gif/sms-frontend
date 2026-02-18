@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,13 +14,12 @@ interface RecordType {
   issuedAt: string;
   returnedAt?: string;
 
-  student: {
-    student_id: string;
-    first_name: string;
-    last_name: string;
+  student?: {
+    id: string;
+    name: string;
   };
 
-  book: {
+  book?: {
     id: string;
     title: string;
   };
@@ -28,10 +28,10 @@ interface RecordType {
 export default function LibraryRecordsPage() {
   const [records, setRecords] = useState<RecordType[]>([]);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState(""); // ✅ SEARCH STATE
+  const [search, setSearch] = useState("");
   const router = useRouter();
 
-  const limit = 10;
+  const limit = 7;
 
   const fetchRecords = async () => {
     try {
@@ -41,11 +41,12 @@ export default function LibraryRecordsPage() {
 
       const formatted = data.map((r: any) => ({
         ...r,
-        returnedAt: r.returnedAt || r.returned_at || null
+        returnedAt: r.returnedAt || null,
       }));
 
       setRecords(formatted);
-    } catch {
+    } catch (err) {
+      console.error(err);
       toast.error("Failed to load records");
     }
   };
@@ -62,18 +63,17 @@ export default function LibraryRecordsPage() {
       await api.delete(`/library/records/${id}`);
       toast.success("Deleted");
 
-      setRecords(prev => prev.filter(r => r.id !== id));
+      setRecords((prev) => prev.filter((r) => r.id !== id));
     } catch {
       toast.error("Delete failed");
     }
   };
 
-  // ✅ SEARCH FILTER LOGIC
-  const filteredRecords = records.filter(r =>
-    `${r.student?.first_name} ${r.student?.last_name}`
-      .toLowerCase()
-      .includes(search.toLowerCase()) ||
-    r.book?.title.toLowerCase().includes(search.toLowerCase())
+  // SEARCH
+  const filteredRecords = records.filter(
+    (r) =>
+      r.student?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      r.book?.title?.toLowerCase().includes(search.toLowerCase())
   );
 
   // PAGINATION
@@ -86,7 +86,6 @@ export default function LibraryRecordsPage() {
       <LibrarySidebar />
 
       <div className="flex-1 p-6 text-black">
-
         {/* HEADER */}
         <div className="flex justify-between mb-5">
           <h1 className="text-2xl font-bold">Library Records</h1>
@@ -99,7 +98,7 @@ export default function LibraryRecordsPage() {
           </button>
         </div>
 
-        {/* ✅ SEARCH INPUT */}
+        {/* SEARCH */}
         <div className="mb-4">
           <input
             type="text"
@@ -136,10 +135,12 @@ export default function LibraryRecordsPage() {
               paginated.map((r) => (
                 <tr key={r.id}>
                   <td className="border p-2">
-                    {r.student?.first_name} {r.student?.last_name}
+                    {r.student?.name ?? "No Student"}
                   </td>
 
-                  <td className="border p-2">{r.book?.title}</td>
+                  <td className="border p-2">
+                    {r.book?.title ?? "No Book"}
+                  </td>
 
                   <td className="border p-2">
                     {r.issuedAt
@@ -153,9 +154,7 @@ export default function LibraryRecordsPage() {
                       : "Not Returned"}
                   </td>
 
-                  {/* ACTION BUTTONS */}
                   <td className="border p-2 space-x-2">
-
                     <button
                       onClick={() => router.push(`/library/view/${r.id}`)}
                       className="bg-green-600 text-white px-3 py-1 rounded"
@@ -176,7 +175,6 @@ export default function LibraryRecordsPage() {
                     >
                       Delete
                     </button>
-
                   </td>
                 </tr>
               ))
@@ -187,7 +185,6 @@ export default function LibraryRecordsPage() {
         {/* PAGINATION */}
         {totalPages > 1 && (
           <div className="flex justify-center mt-6 gap-2">
-
             <button
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
@@ -215,10 +212,8 @@ export default function LibraryRecordsPage() {
             >
               Next
             </button>
-
           </div>
         )}
-
       </div>
     </div>
   );
