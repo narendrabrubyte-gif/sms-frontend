@@ -59,7 +59,7 @@ export default function AddEnrollmentPage() {
 
         setStudents(studentsRes.data?.data || []);
         setCourses(coursesRes.data?.data || []);
-      } catch (_error) {
+      } catch {
         toast.error("Failed to load dropdown data");
       } finally {
         setPageLoading(false);

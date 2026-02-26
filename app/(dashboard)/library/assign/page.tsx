@@ -12,8 +12,7 @@ type Book = {
 
 type Student = {
   student_id: string;
-  first_name: string;
-  last_name: string;
+  name: string;
   // add other fields as needed
 };
 
@@ -111,7 +110,7 @@ export default function AssignPage() {
 
           {students.map((s) => (
             <option key={s.student_id} value={s.student_id}>
-              {s.first_name} {s.last_name}
+              {s.name}
             </option>
           ))}
         </select>
